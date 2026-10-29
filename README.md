@@ -154,23 +154,23 @@ npm run dev
 
 ## ☁️ Deployment on Render
 
-This repository is pre-configured with a Render Blueprint (`render.yaml` / `render.yml`) for instant deployment:
+This project is configured to run as a unified full-stack service (Express backend + React/Vite frontend) on Render's free tier.
 
-### 1. Deploy with Render Blueprint (Recommended)
-1. Push your code to your GitHub repository.
-2. In the [Render Dashboard](https://dashboard.render.com), click **New +** > **Blueprint**.
-3. Connect your GitHub repository (`CropPilot-Arificial-Intelligence`).
-4. Render will automatically detect `render.yaml` and configure both services:
-   - **`croppilot-server`**: Node.js Web Service running the Express REST API.
-   - **`croppilot-client`**: High-performance Static Site running the React + Vite frontend.
-5. Provide the required environment variables when prompted:
-   - For `croppilot-server`:
-     - `SUPABASE_URL`: Your Supabase Project URL (`https://xyz.supabase.co`)
-     - `SUPABASE_SERVICE_ROLE_KEY`: Your Supabase Service Role Secret Key
-     - `GEMINI_API_KEY`: Your Google Gemini API Key
-     - `CLIENT_URL`: The URL of your deployed frontend (e.g., `https://croppilot-client.onrender.com`)
-   - For `croppilot-client`:
-     - `VITE_SUPABASE_URL`: Your Supabase Project URL
-     - `VITE_SUPABASE_ANON_KEY`: Your Supabase Anonymous Public Key
-     - `VITE_API_URL`: The URL of your deployed backend (e.g., `https://croppilot-server.onrender.com`)
-6. Click **Apply** to deploy both services simultaneously!
+### Deploying Your Web Service
+1. In your Render Dashboard, open your Web Service (`CropPilot-Arificial-Intelligence`).
+2. Verify Settings under the **Settings** tab:
+   - **Root Directory**: *(leave blank/default)*
+   - **Environment**: `Node`
+   - **Build Command**: `npm run build`
+   - **Start Command**: `npm start`
+3. Under the **Environment** tab, add your environment variables:
+   - `NODE_ENV`: `production`
+   - `PORT`: `10000` (Render provides this automatically)
+   - `SUPABASE_URL`: Your Supabase Project URL (`https://xyz.supabase.co`)
+   - `SUPABASE_SERVICE_ROLE_KEY`: Your Supabase Service Role secret key
+   - `VITE_SUPABASE_URL`: Your Supabase Project URL
+   - `VITE_SUPABASE_ANON_KEY`: Your Supabase Anon public key
+   - `GEMINI_API_KEY`: Your Google Gemini API key
+   - `GEMINI_MODEL`: `gemini-2.5-flash`
+4. Click **Manual Deploy** $\rightarrow$ **Clear build cache & deploy**.
+5. Render will install dependencies, build the frontend, and launch your server!

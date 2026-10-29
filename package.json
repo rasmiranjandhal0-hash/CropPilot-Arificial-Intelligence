@@ -7,11 +7,15 @@
     "dev": "concurrently -n \"SERVER,CLIENT\" -c \"cyan,magenta\" \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
     "dev:server": "npm run dev --prefix server",
     "dev:client": "npm run dev --prefix client",
-    "build": "npm run build --prefix client",
+    "install:server": "npm install --prefix server",
+    "install:client": "npm install --include=dev --prefix client",
+    "install:all": "npm install && npm install --prefix server && npm install --include=dev --prefix client",
+    "postinstall": "npm install --prefix server && npm install --include=dev --prefix client",
+    "build": "npm install --prefix server && npm install --include=dev --prefix client && npm run build --prefix client",
     "build:client": "npm run build --prefix client",
-    "start": "npm start --prefix server",
+    "build:all": "npm install --prefix server && npm install --include=dev --prefix client && npm run build --prefix client",
+    "start": "node server/src/index.js",
     "start:server": "npm start --prefix server",
-    "install:all": "npm install && npm install --prefix server && npm install --prefix client",
     "migrate": "npm run migrate --prefix server"
   },
   "devDependencies": {
