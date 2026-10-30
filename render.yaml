@@ -1,16 +1,17 @@
-# Render Blueprint Specification
+# Render Blueprint Specification (Backend Only)
 # Docs: https://render.com/docs/blueprint-spec
 version: "1"
 
 services:
   # ========================================================
-  # Unified Web Service (Express API + React Frontend)
+  # Backend Web Service (Node.js Express REST API)
   # ========================================================
   - type: web
-    name: croppilot
+    name: croppilot-backend
     runtime: node
     plan: free
-    buildCommand: npm run build
+    rootDir: server
+    buildCommand: npm install
     startCommand: npm start
     healthCheckPath: /api/health
     envVars:
@@ -18,6 +19,8 @@ services:
         value: production
       - key: PORT
         value: 10000
+      - key: CLIENT_URL
+        sync: false
       - key: SUPABASE_URL
         sync: false
       - key: SUPABASE_SERVICE_ROLE_KEY
@@ -27,8 +30,4 @@ services:
       - key: GEMINI_MODEL
         value: gemini-2.5-flash
       - key: DATABASE_URL
-        sync: false
-      - key: VITE_SUPABASE_URL
-        sync: false
-      - key: VITE_SUPABASE_ANON_KEY
         sync: false

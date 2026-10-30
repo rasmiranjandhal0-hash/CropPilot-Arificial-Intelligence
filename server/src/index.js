@@ -48,8 +48,20 @@ app.use(
       // Allow requests with no origin (e.g. mobile apps, curl, uptime/health checks)
       if (!origin) return callback(null, true);
 
+      // Check if origin is a Vercel preview or production app (*.vercel.app)
+      let isVercel = false;
+      try {
+        const hostname = new URL(origin).hostname;
+        if (hostname.endsWith('.vercel.app')) {
+          isVercel = true;
+        }
+      } catch {
+        isVercel = false;
+      }
+
       if (
         config.clientUrl === '*' ||
+        isVercel ||
         allowedOrigins.includes(origin) ||
         allowedOrigins.includes(origin.replace(/\/+$/, '')) ||
         process.env.NODE_ENV !== 'production'

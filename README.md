@@ -152,25 +152,39 @@ npm run dev
 
 ---
 
-## ☁️ Deployment on Render
+## ☁️ Deployment Guide: Render (Backend) + Vercel (Frontend)
 
-This project is configured to run as a unified full-stack service (Express backend + React/Vite frontend) on Render's free tier.
+### Part 1: Deploy Backend to Render
 
-### Deploying Your Web Service
-1. In your Render Dashboard, open your Web Service (`CropPilot-Arificial-Intelligence`).
-2. Verify Settings under the **Settings** tab:
-   - **Root Directory**: *(leave blank/default)*
-   - **Environment**: `Node`
-   - **Build Command**: `npm run build`
-   - **Start Command**: `npm start`
-3. Under the **Environment** tab, add your environment variables:
+1. Go to your [Render Dashboard](https://dashboard.render.com).
+2. If you already have the `CropPilot-Arificial-Intelligence` Web Service:
+   - Go to **Settings**:
+     - **Root Directory**: `server` (or leave blank; root scripts also deploy server only)
+     - **Build Command**: `npm install` (or `npm run build`)
+     - **Start Command**: `npm start`
+3. Under the **Environment** tab, set these variables:
    - `NODE_ENV`: `production`
    - `PORT`: `10000` (Render provides this automatically)
-   - `SUPABASE_URL`: Your Supabase Project URL (`https://xyz.supabase.co`)
+   - `CLIENT_URL`: `https://your-frontend-project.vercel.app` (or `*`)
+   - `SUPABASE_URL`: Your Supabase Project URL (`https://your-project.supabase.co`)
    - `SUPABASE_SERVICE_ROLE_KEY`: Your Supabase Service Role secret key
-   - `VITE_SUPABASE_URL`: Your Supabase Project URL
-   - `VITE_SUPABASE_ANON_KEY`: Your Supabase Anon public key
    - `GEMINI_API_KEY`: Your Google Gemini API key
    - `GEMINI_MODEL`: `gemini-2.5-flash`
 4. Click **Manual Deploy** $\rightarrow$ **Clear build cache & deploy**.
-5. Render will install dependencies, build the frontend, and launch your server!
+5. Once deployed, copy your Render backend URL (e.g., `https://croppilot-arificial-intelligence.onrender.com`).
+
+---
+
+### Part 2: Deploy Frontend to Vercel
+
+1. Go to your [Vercel Dashboard](https://vercel.com/dashboard) and click **Add New...** $\rightarrow$ **Project**.
+2. Import your GitHub repository (`rasmiranjandhal0-hash/CropPilot-Arificial-Intelligence`).
+3. In the project configuration:
+   - **Framework Preset**: `Vite`
+   - **Root Directory**: Click *Edit* and select `client` (or leave as default root; `vercel.json` is provided for both!)
+4. Under **Environment Variables**, add:
+   - `VITE_API_URL`: Your Render backend URL from Part 1 (e.g., `https://croppilot-arificial-intelligence.onrender.com`)
+   - `VITE_SUPABASE_URL`: Your Supabase Project URL (`https://your-project.supabase.co`)
+   - `VITE_SUPABASE_ANON_KEY`: Your Supabase anon public key
+5. Click **Deploy**.
+6. Vercel will build and deploy your React frontend. SPA routing (`/*` $\rightarrow$ `/index.html`) is pre-configured in `vercel.json`.
